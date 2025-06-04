@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معايدة العيد - الصالحات القابضة</title>
+
+    <!-- خطي Tajawal وNoto Naskh Arabic -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Naskh Arabic', Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f2f5;
+            padding: 20px;
+            margin: 0;
+            line-height: 1.6;
+        }
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            color: #2a5885;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+        #template-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+        #name-input {
+            padding: 15px 20px;
+            width: 85%;
+            font-size: 20px;
+            margin: 20px 0;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        #name-input:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 12px rgba(33, 150, 243, 0.3);
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+            margin: 15px 8px;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        #preview-container {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+        }
+        #name-text {
+            position: absolute;
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 36px;
+            color: #2B27C3;
+            font-weight: 700;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.25);
+            width: 100%;
+            text-align: center;
+            top: 87%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80%);
+            letter-spacing: 0;
+            word-spacing: 0;
+            line-height: 1.5;
+            padding: 0 10px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        #download-btn {
+            display: none;
+            margin-top: 25px;
+            background-color: #2196F3;
+        }
+        #download-btn:hover {
+            background-color: #0b7dda;
+        }
+        .instructions {
+            color: #666;
+            margin: 20px 0;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .quality-options {
+            margin: 20px 0;
+        }
+        .quality-option {
+            display: inline-block;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>بطاقة معايدة العيد المبارك - أعلى جودة</h1>
+        <p class="instructions">أدخل اسمك في الحقل بالأسفل ليظهر على بطاقة العيد بجودة عالية الدقة</p>
+        
+        <div id="preview-container">
+            <img id="template-image" src="IMG_6426.jpeg" alt="تصميم بطاقة العيد">
+            <div id="name-text"></div>
+        </div>
+        
+        <input type="text" id="name-input" placeholder="اكتب اسمك هنا" autocomplete="off">
+        
+        <div class="quality-options">
+            <div class="quality-option">
+                <button onclick="generateImage(2)">جودة عالية (2x)</button>
+            </div>
+            <div class="quality-option">
+                <button onclick="generateImage(3)">جودة فائقة (3x)</button>
+            </div>
+            <div class="quality-option">
+                <button onclick="generateImage(4)">أقصى جودة (4x)</button>
+            </div>
+        </div>
+        
+        <a id="download-btn" download="معايدة-العيد-بجودة-عالية.jpg"><button>حفظ البطاقة</button></a>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script>
+        let currentScale = 3;
+
+        // تحسين تنسيق النص العربي
+        function prepareArabicText() {
+            const nameText = document.getElementById('name-text');
+            const arabicName = nameText.textContent;
+            nameText.innerHTML = '&#x200F;' + arabicName + '&#x200F;';
+            nameText.style.fontVariant = 'normal';
+            nameText.style.fontFeatureSettings = '"calt" 1, "liga" 1';
+        }
+
+        // توليد الصورة
+        const generateImage = async (scale = 3) => {
+            const container = document.getElementById('preview-container');
+            const name = document.getElementById('name-input').value.trim();
+            
+            if (!name) {
+                alert("الرجاء إدخال اسمك أولاً!");
+                return;
+            }
+
+            document.getElementById('name-text').textContent = name;
+            currentScale = scale;
+
+            prepareArabicText(); // تطبيق التنسيق العربي قبل الالتقاط
+
+            try {
+                await document.fonts.ready; // لضمان تحميل الخط
+                const canvas = await html2canvas(container, {
+                    scale: scale,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    quality: 1,
+                    backgroundColor: null,
+                    letterRendering: true,
+                    ignoreClear: true
+                });
+
+                const link = document.getElementById('download-btn');
+                link.href = canvas.toDataURL('image/jpeg', 1.0);
+                link.style.display = 'inline-block';
+
+                const fileSize = (link.href.length * 0.75) / (1024*1024);
+                alert(`تم إنشاء الصورة بنجاح!\nالدقة: ${canvas.width}×${canvas.height} بكسل\nحجم الملف: ${fileSize.toFixed(2)} MB`);
+            } catch (error) {
+                console.error("حدث خطأ في إنشاء الصورة:", error);
+                alert("حدث خطأ أثناء إنشاء الصورة، الرجاء المحاولة مرة أخرى");
+            }
+        };
+
+        // تهيئة الصفحة
+        window.addEventListener('load', () => {
+            const img = document.getElementById('template-image');
+            const nameInput = document.getElementById('name-input');
+
+            img.onload = function() {
+                if (this.naturalWidth > 1200) {
+                    this.style.width = '90%';
+                }
+            };
+
+            nameInput.focus();
+
+            nameInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    generateImage(currentScale);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
