@@ -70,47 +70,47 @@
 <body>
     <div id="container">
         <h1>أضف اسمك إلى بطاقة العيد</h1>
-
+        
         <div id="preview-container">
             <img id="template-image" src="IMG_6426.jpeg" alt="تصميم العيد">
             <div id="name-text"></div>
         </div>
-
+        
         <input type="text" id="name-input" placeholder="اكتب اسمك هنا">
         <button onclick="addNameToImage()">إنشاء بطاقتي</button>
         <a id="download-btn" download="معايدة-العيد-الخاصة-بي.jpg"><button>حمل البطاقة الآن</button></a>
     </div>
 
     <script>
-        const textYPosition = 65; // percentage of image height
-
+        // إحداثيات مكان النص (وسط الصورة بين العبارتين)
+        const textYPosition = 65; // نسبة مئوية من ارتفاع الصورة
+        
         function addNameToImage() {
             const name = document.getElementById('name-input').value.trim();
             if (!name) {
                 alert("الرجاء إدخال اسمك أولاً!");
                 return;
             }
-
+            
             const nameText = document.getElementById('name-text');
             nameText.innerText = name;
-
+            
             const img = document.getElementById('template-image');
             const imgHeight = img.clientHeight;
-
-            // Position name in middle
+            
+            // تحديد الموضع الرأسي
             nameText.style.top = `${(textYPosition / 100) * imgHeight}px`;
-
-            // Capture high-res image
-            html2canvas(document.getElementById('preview-container'), {
-                scale: 3 // higher resolution
-            }).then(canvas => {
+            
+            // إنشاء الصورة للتحميل
+            html2canvas(document.getElementById('preview-container')).then(canvas => {
                 const link = document.getElementById('download-btn');
-                link.href = canvas.toDataURL('image/jpeg', 1.0); // high quality
+                link.href = canvas.toDataURL('image/jpeg');
                 link.style.display = 'inline-block';
-                link.click(); // auto-download
+                link.click(); // تحميل تلقائي بعد الإنشاء
             });
         }
-
+        
+        // تحميل الصورة أولاً لضبط الأبعاد
         window.onload = function() {
             const img = document.getElementById('template-image');
             img.onload = function() {
