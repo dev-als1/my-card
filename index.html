@@ -86,14 +86,18 @@
     #name-text {
       position: absolute;
       font-family: 'Kufam', sans-serif;
+      font-size: 14px;
       color: #2B27C3;
       font-weight: 700;
       text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
       width: 100%;
       text-align: center;
+      left: 50%;
+      transform: translateX(-50%);
       white-space: nowrap;
       line-height: 1.5;
       padding: 0 15px;
+      pointer-events: none;
     }
 
     #download-btn {
@@ -153,29 +157,15 @@
     const img = document.getElementById('template-image');
     const downloadBtn = document.getElementById('download-btn');
 
+    function prepareArabicText(text) {
+      nameText.style.fontFeatureSettings = '"calt" 1, "liga" 1';
+      nameText.innerHTML = sanitizeInput(text);
+    }
+
     function sanitizeInput(input) {
       const temp = document.createElement('div');
       temp.textContent = input;
       return temp.innerHTML;
-    }
-
-    function prepareArabicText(text) {
-      nameText.style.fontFeatureSettings = '"calt" 1, "liga" 1';
-      nameText.textContent = sanitizeInput(text);
-    }
-
-    function updateTextPosition() {
-      const image = document.getElementById('template-image');
-      const text = document.getElementById('name-text');
-
-      const imgHeight = image.clientHeight;
-      const imgWidth = image.clientWidth;
-
-      const topPosition = imgHeight * 0.83;
-      const fontSize = imgWidth * 0.045;
-
-      text.style.top = `${topPosition}px`;
-      text.style.fontSize = `${fontSize}px`;
     }
 
     async function generateImage(scale = 3) {
@@ -191,7 +181,13 @@
       }
 
       prepareArabicText(name);
-      updateTextPosition();
+
+      const imgHeight = img.naturalHeight || img.height;
+      const previewHeight = document.getElementById('preview-container').offsetHeight;
+      const adjustedTop = previewHeight * 0.91;
+
+      nameText.style.top = `${adjustedTop}px`;
+      nameText.textContent = name;
 
       try {
         const canvas = await html2canvas(document.getElementById('preview-container'), {
@@ -218,9 +214,6 @@
           generateImage(3);
         }
       });
-
-      img.addEventListener('load', updateTextPosition);
-      window.addEventListener('resize', updateTextPosition);
     });
   </script>
 </body>
