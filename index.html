@@ -167,9 +167,9 @@
 
       prepareArabicText(name);
 
-      // تحديد الموضع النسبي للنص (91% من ارتفاع الصورة المعروضة)
+      // الموضع الجديد في الفراغ الأبيض
       const containerHeight = previewContainer.offsetHeight;
-      const nameTop = containerHeight * 0.91;
+      const nameTop = containerHeight * 0.77; // 🔁 جرّب تعديلها حسب الحاجة البصرية
       nameText.style.top = `${nameTop}px`;
 
       nameText.textContent = name;
